@@ -11,6 +11,7 @@ export default {
         'myColor': '#fbf2e4',
         'secondary': '#F47941',
         'primary': '#837451',
+        'accent': '#46482E',
         'icons': '#FFC107',
       },
     },

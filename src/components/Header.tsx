@@ -20,7 +20,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex absolute z-50 w-full justify-between items-center p-4">
+    <header className="flex hidden lg:absolute z-50 w-full justify-between items-center p-4">
       <a href="/"><h1 className="text-2xl font-bold">CropCollect</h1></a>
       <div className="relative flex gap-16 items-center">
 
@@ -32,7 +32,7 @@ const Header = () => {
         About
       </button>
 
-      <button className="text-lg font-bold font-secondary">
+      <button className="text-lg font-bold font-secondary hover:text-secondary">
         Contact
       </button>
       
@@ -44,9 +44,9 @@ const Header = () => {
         {/* Checkout-knapp */}
         <Button
         onClick={handleLogout}
-        className="mr-4 px-4 py-2 text-white rounded h-10 text-center w-10 transition"
+        className=""
       >
-        Logout
+        Login
       </Button>
           <button
           onClick={handleCartClick} // Gör cartIcon till en klickbar knapp

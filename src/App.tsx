@@ -79,7 +79,7 @@ const App: React.FC = () => {
         {/* En fast knapp för att navigera till kartvyn */}
         <div className="fixed bottom-4 right-4">
           <Link to="/map">
-            <button className="px-4 py-2 bg-green-500 text-white rounded">
+            <button className="px-4 hidden py-2 bg-green-500 text-white rounded">
               Visa karta
             </button>
           </Link>
