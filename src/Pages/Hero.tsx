@@ -1,11 +1,30 @@
-import React from "react";  
+import React, { useEffect } from "react";
 import Vegetales from '../assets/images/vegetables_picture.jpg'
 import Handcraft from '../assets/images/handcraft.jpg'
 import HoneyMaking from '../assets/images/honey_making.jpg'
 import Explore from '../components/Button'
-
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
 
 function Hero() {
+    useEffect(() => {
+        gsap.fromTo(".hero-image", {
+            opacity: 0,
+            y: 50
+        }, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            scrollTrigger: {
+                trigger: ".hero-image",
+                start: "top 80%",
+                end: "bottom 60%",
+                once: true // Add this line to ensure the animation only happens once
+            }
+        });
+    }, []);
+
     return (
         <>
       <div className="h-full pb-24 bg-primary text-myColor">
@@ -42,7 +61,8 @@ function Hero() {
               relative
               col-span-1
               row-span-1
-
+              h-80
+              hero-image
               lg:col-span-1
               lg:row-span-1
             "
@@ -54,7 +74,7 @@ function Hero() {
             />
             <div className="absolute inset-0 flex flex-col items-start justify-center ml-5">
               <p className="text-white text-2xl font-bold">Fresh Harvest</p>
-              <p className="text-white text-lg font-semibold italic font-sans">
+              <p className="text-white text-lg mt-2 font-semibold italic font-sans">
                 Pure flavors in each harvest
               </p>
             </div>
@@ -66,7 +86,7 @@ function Hero() {
               relative
               col-span-1
               row-span-1
-
+              hero-image
               lg:col-span-1
               lg:row-span-1
             "
@@ -78,8 +98,8 @@ function Hero() {
             />
             <div className="absolute inset-0 flex flex-col items-start justify-center ml-5">
               <p className="text-white text-2xl font-bold">Handmade Creations</p>
-              <p className="text-white text-lg font-semibold italic font-sans">
-                Crafted with skill and heart
+              <p className="text-white text-lg mt-2 font-semibold italic font-sans">
+                Crafted with <br></br>skill and heart
               </p>
             </div>
           </article>
@@ -90,7 +110,7 @@ function Hero() {
               relative
               col-span-2
               row-span-1
-
+              hero-image
               lg:col-span-1
               lg:row-span-1
             "
@@ -102,7 +122,7 @@ function Hero() {
             />
             <div className="absolute inset-0 flex flex-col items-start justify-center ml-5">
               <p className="text-white text-2xl font-bold">Sweet Possibilities</p>
-              <p className="text-white text-lg font-semibold italic font-sans">
+              <p className="text-white text-lg mt-2 font-semibold italic font-sans">
                 A swirl of natural flavor, perfect for cooking, baking, and everyday treats.
               </p>
             </div>
@@ -111,5 +131,5 @@ function Hero() {
       </div>
     </>
     );
-    }
-    export default Hero;
+}
+export default Hero;

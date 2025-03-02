@@ -5,53 +5,59 @@ import Footer from '../Pages/Footer';
 import Parallax from './Parallax';
 import MapLanding from './MapLanding';
 import Button from '../components/Button';
+import { motion } from 'framer-motion';
 
 const LandingPage = () => {
     const navigate = useNavigate();
 
+    const containerVariants = {
+        hidden: { opacity: 0, y: -50 },
+        visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 50, damping: 10, duration: 1 } },
+        exit: { opacity: 0, y: 50, transition: { ease: 'easeInOut', duration: 1 } }
+    };
+
+    const buttonVariants = {
+        hover: { scale: 1.1, transition: { yoyo: Infinity, duration: 0.3 } }
+    };
+
     return (
-        <div>
-
-            <div className="flex">
-
-                <div className='flex flex-col items-center bg-myColor justify-center h-screen w-full gap-10'>
-                    <h1 className="text-2xl font-primary text-center font-semibold mr-2 ml-2 tracking-wide text-black">Bringing Farm-Fresh Goodness <p className="font-bold leading-loose">Straight to You</p></h1>
-
-                    <p className="font-primary text-sm tracking-wide text-center mr-10 ml-10">At CropCollect, we connect local farmers with communities that value fresh, sustainable produce. Our mission is to simplify farm-to-table sourcing so everyone can enjoy high-quality, responsibly grown crops. Join us—and discover a new way to shop, eat, and live healthier.</p>
-
-                    <Button> Get Started</Button>
-
+        <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+        >
+            <div className="flex flex-col lg:flex-row">
+                <div className='flex flex-col items-center bg-myColor justify-center h-[790px] lg:h-screen w-full lg:w-1/2 gap-5'>
+                    <h1 className="text-3xl lg:text-5xl font-primary text-center font-semibold mr-2 ml-2 tracking-wide text-black">Bringing Farm-Fresh Goodness <p className="font-bold leading-loose">Straight to You</p></h1>
+                    <p className="font-primary text-lg tracking-wide text-center mr-2 ml-2 mb-12">At CropCollect, we connect local farmers with communities that value fresh, sustainable produce. Our mission is to simplify farm-to-table sourcing so everyone can enjoy high-quality, responsibly grown crops. Join us—and discover a new way to shop, eat, and live healthier.</p>
+                    <motion.div variants={buttonVariants}>
+                        <Button className="w-52 h-16"> Get Started</Button>
+                    </motion.div>
                     <button
                         className="text-blue-500 font-secondary bottom-10 absolute hover:text-secondary"
                         onClick={() => navigate("/register")}
-                        >
+                    >
                         Create account
                     </button>
                 </div>
-
-                
-
-                <div className="hidden absolute h-screen w-1/2 right-0">
+                <div className="hidden lg:block h-screen w-1/2">
                     <video 
-                    autoPlay 
-                    muted 
-                    loop 
-                    className='w-full h-screen object-cover'
+                        autoPlay 
+                        muted 
+                        loop 
+                        className='w-full h-screen object-cover filter brightness-75'
                     >
                         <source src={landingVideo} type="video/mp4" />
                         Webbläsaren stödjer inte video.
                     </video>
                 </div>
             </div>
-
             <Hero />
-
             <Parallax/>
-
             <MapLanding/>
-
             <Footer />
-        </div>
+        </motion.div>
     );
 }
 

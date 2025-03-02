@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import LandingPage from "./Pages/Landing";
+import Login from "./Pages/Login";
 import LoginBuyer from "./Pages/Buyer/LoginBuyer";
 import LoginSeller from "./Pages/Seller/LoginSeller";
 import RegisterBuyer from "./Pages/Buyer/RegisterBuyer";
@@ -17,6 +18,7 @@ import Header from "./components/Header";
 import { CartProvider } from "./context/CartContext";
 import { GeoData } from "./Interface/GeoData";
 import L from "leaflet";
+import SellerProfile from "./Pages/Seller/SellerProfile";
 
 const App: React.FC = () => {
   // State för att lagra geo-data (affärer/säljare)
@@ -60,6 +62,7 @@ const App: React.FC = () => {
           {/* Publika Routes */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/register" element={<RegisterBuyer />} />
+          <Route path="/Login" element={<Login />} />
           <Route path="/LoginBuyer" element={<LoginBuyer />} />
           <Route path="/LoginSeller" element={<LoginSeller />} />
 
@@ -74,16 +77,17 @@ const App: React.FC = () => {
             <Route path="/cart" element={<Cart />} />
             <Route path="/seller" element={<SellerLandingPage />} />
             <Route path="/inventory" element={<Inventory />} />
+            <Route path="/seller/profile" element={<SellerProfile />} />
           </Route>
         </Routes>
         {/* En fast knapp för att navigera till kartvyn */}
-        <div className="fixed bottom-4 right-4">
+        {/* <div className="absolute top-52 z-50">
           <Link to="/map">
-            <button className="px-4 hidden py-2 bg-green-500 text-white rounded">
+            <button className="absolute py-2 bg-green-500 text-white rounded">
               Visa karta
             </button>
           </Link>
-        </div>
+        </div> */}
       </Router>
     </CartProvider>
   );

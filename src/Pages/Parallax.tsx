@@ -29,19 +29,29 @@ function Parallax() {
       <div
         className="absolute w-full h-full bg-cover bg-center"
         style={{
-          // Använd offsetY multiplicerat med en faktor för att styra effekten
-          transform: `translateY(${offsetY * 0.20}px)`,
+          transform: `translateY(${offsetY * 0.2}px)`,
           willChange: "transform",
         }}
       >
-        <img src={pict} alt="test" style={{ width: "100%", height: "105%", objectFit: "cover", position: "relative", top: "-145px", }} />
+        <img
+          src={pict}
+          alt="test"
+          className="top[-182px] lg:top-[-142px]"
+          style={{
+            width: "100%",
+            height: "110%",
+            objectFit: "cover",
+            position: "absolute",
+            top: -185,
+            left: 0,
+          }}
+        />
       </div>
-      {/* <div className="relative z-10 flex items-center justify-center h-full text-white">
+      <div className="relative z-10 flex items-center justify-center h-full text-white">
         <h1 className="text-4xl font-bold">Your Hero Title</h1>
-      </div> */}
+      </div>
     </section>
   );
 }
 
 export default Parallax;
-

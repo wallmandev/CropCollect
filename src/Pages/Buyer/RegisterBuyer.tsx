@@ -215,120 +215,130 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 relative">
-      <h1 className="text-3xl font-bold mb-6">Register</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          placeholder="Name"
-          className="border p-2"
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Email"
-          className="border p-2"
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          placeholder="Password"
-          className="border p-2"
-          required
-        />
-        <select name="role" value={formData.role} onChange={handleChange} className="border p-2">
-          <option value="buyer">Buyer</option>
-          <option value="seller">Seller</option>
-        </select>
-
-        {formData.role === "seller" && (
-          <>
-            <input
-              type="text"
-              name="businessAddress"
-              value={formData.businessAddress}
-              onChange={handleChange}
-              placeholder="Business address"
-              className="border p-2"
-              required
-            />
-            {suggestions.length > 0 && (
-              <ul className="absolute bg-white border border-gray-300 w-full z-50">
-                {suggestions.map((s, index) => (
-                  <li
-                    key={index}
-                    onClick={() => handleSuggestionClick(s.placeId, s.description)}
-                    className="p-2 cursor-pointer hover:bg-gray-100"
-                  >
-                    {s.description}
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            <h3 className="text-lg font-semibold mt-4">Öppettider:</h3>
-            {daysOfWeek.map((day) => (
-              <div key={day} className="flex flex-col gap-1">
-                <div className="flex gap-2 items-center">
-                  <label className="w-24">{day}</label>
+    <div className="min-h-screen bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-1xl w-full">
+        <h2 className="text-2xl font-bold mb-6 text-center">Create Account</h2>
+        <div className="max-w-4xl mx-auto p-8 rounded-lg shadow-2xl bg-white bg-opacity-80 flex flex-col md:flex-row">
+          <div className="w-full md:w-1/2 p-8">
+            <h1 className="text-4xl font-extrabold mb-6 text-gray-800 drop-shadow-lg">Create Account</h1>
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Name"
+                className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg bg-gray-100 col-span-1 md:col-span-2"
+                required
+              />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg bg-gray-100 col-span-1 md:col-span-2"
+                required
+              />
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Password"
+                className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg bg-gray-100 col-span-1 md:col-span-2"
+                required
+              />
+              <select name="role" value={formData.role} onChange={handleChange} className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg bg-gray-100 col-span-1 md:col-span-2">
+                <option value="buyer">Buyer</option>
+                <option value="seller">Seller</option>
+              </select>
+              {formData.role === "seller" && (
+                <>
                   <input
-                    type="checkbox"
-                    checked={formData.openHours[day].isOpen}
-                    onChange={(e) => handleOpenHoursChange(day, "isOpen", e.target.checked)}
-                    disabled={formData.openHours[day].isClosed}
+                    type="text"
+                    name="businessAddress"
+                    value={formData.businessAddress}
+                    onChange={handleChange}
+                    placeholder="Business address"
+                    className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg bg-gray-100 col-span-1 md:col-span-2"
+                    required
                   />
-                  <label>Open</label>
-                  <input
-                    type="checkbox"
-                    checked={formData.openHours[day].isClosed}
-                    onChange={(e) => handleOpenHoursChange(day, "isClosed", e.target.checked)}
-                    disabled={formData.openHours[day].isOpen}
-                  />
-                  <label>Closed</label>
-                </div>
-                {formData.openHours[day].isOpen && !formData.openHours[day].isClosed && (
-                  <>
-                    {timePickerVisibility[day] ? (
+                  {suggestions.length > 0 && (
+                    <ul className="absolute bg-white border border-gray-300 w-full z-50 rounded-lg shadow-lg col-span-1 md:col-span-2">
+                      {suggestions.map((s, index) => (
+                        <li
+                          key={index}
+                          onClick={() => handleSuggestionClick(s.placeId, s.description)}
+                          className="p-3 cursor-pointer hover:bg-gray-100"
+                        >
+                          {s.description}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <h3 className="text-lg font-semibold mt-4 text-gray-800 drop-shadow-lg col-span-1 md:col-span-2">Öppettider:</h3>
+                  {daysOfWeek.map((day) => (
+                    <div key={day} className="flex flex-col gap-2 col-span-1 md:col-span-2">
                       <div className="flex gap-2 items-center">
+                        <label className="w-24 text-gray-800 drop-shadow-lg">{day}</label>
                         <input
-                          type="time"
-                          value={formData.openHours[day].open}
-                          onChange={(e) => handleTimeChange(day, "open", e.target.value)}
+                          type="checkbox"
+                          checked={formData.openHours[day].isOpen}
+                          onChange={(e) => handleOpenHoursChange(day, "isOpen", e.target.checked)}
+                          disabled={formData.openHours[day].isClosed}
                         />
-                        <span>-</span>
+                        <label className="text-gray-800 drop-shadow-lg">Open</label>
                         <input
-                          type="time"
-                          value={formData.openHours[day].close}
-                          onChange={(e) => handleTimeChange(day, "close", e.target.value)}
+                          type="checkbox"
+                          checked={formData.openHours[day].isClosed}
+                          onChange={(e) => handleOpenHoursChange(day, "isClosed", e.target.checked)}
+                          disabled={formData.openHours[day].isOpen}
                         />
+                        <label className="text-gray-800 drop-shadow-lg">Closed</label>
                       </div>
-                    ) : (
-                      <div className="flex gap-2 items-center cursor-pointer" onClick={() => handleTimeEdit(day)}>
-                        <span>
-                          {formData.openHours[day].open} - {formData.openHours[day].close} (Ändra)
-                        </span>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            ))}
-          </>
-        )}
-        {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-          Register
-        </button>
-      </form>
+                      {formData.openHours[day].isOpen && !formData.openHours[day].isClosed && (
+                        <>
+                          {timePickerVisibility[day] ? (
+                            <div className="flex gap-2 items-center">
+                              <input
+                                type="time"
+                                value={formData.openHours[day].open}
+                                onChange={(e) => handleTimeChange(day, "open", e.target.value)}
+                                className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg bg-gray-100"
+                              />
+                              <span className="text-gray-800 drop-shadow-lg">-</span>
+                              <input
+                                type="time"
+                                value={formData.openHours[day].close}
+                                onChange={(e) => handleTimeChange(day, "close", e.target.value)}
+                                className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg bg-gray-100"
+                              />
+                            </div>
+                          ) : (
+                            <div className="flex gap-2 items-center cursor-pointer" onClick={() => handleTimeEdit(day)}>
+                              <span className="text-gray-800 drop-shadow-lg">
+                                {formData.openHours[day].open} - {formData.openHours[day].close} (Ändra)
+                              </span>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </>
+              )}
+              {errorMessage && <p className="text-red-500 col-span-1 md:col-span-2">{errorMessage}</p>}
+              <button type="submit" className="bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 shadow-lg col-span-1 md:col-span-2">
+                Create Account
+              </button>
+            </form>
+          </div>
+          <div className="hidden md:block w-1/2">
+            <img src="/src/assets/images/vegetables_picture.jpg" alt="Vegetables" className="w-full h-full object-cover rounded-lg" />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
