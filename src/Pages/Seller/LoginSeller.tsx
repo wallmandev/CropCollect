@@ -30,7 +30,7 @@ const LoginSeller = () => {
       }
   
       const data = await response.json();
-      console.log("✅ API-respons:", data); // 🛑 Kolla om `name` finns här
+      console.log("✅ API-respons:", data);
   
       if (!data.token || !data.userId || !data.name) {
         throw new Error("Ogiltig API-respons: saknar nödvändiga data.");
@@ -38,7 +38,9 @@ const LoginSeller = () => {
   
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);
-      localStorage.setItem("name", data.name); // 🔥 Är detta `undefined`?
+      localStorage.setItem("role", data.role);
+      localStorage.setItem("name", data.name);
+      localStorage.setItem("loginstatus", "true");
   
       console.log("✅ Inloggning lyckades:", data);
       navigate("/seller");

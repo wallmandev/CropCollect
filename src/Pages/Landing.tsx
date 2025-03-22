@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 
 const LandingPage = () => {
     const navigate = useNavigate();
+    localStorage.setItem("loginstatus", "false");
 
     const containerVariants = {
         hidden: { opacity: 0, y: -50 },
@@ -20,6 +21,7 @@ const LandingPage = () => {
         hover: { scale: 1.1, transition: { yoyo: Infinity, duration: 0.3 } }
     };
 
+
     return (
         <motion.div
             variants={containerVariants}
@@ -28,18 +30,12 @@ const LandingPage = () => {
             exit="exit"
         >
             <div className="flex flex-col lg:flex-row">
-                <div className='flex flex-col items-center bg-myColor justify-center h-[790px] lg:h-screen w-full lg:w-1/2 gap-5'>
-                    <h1 className="text-3xl lg:text-5xl font-primary text-center font-semibold mr-2 ml-2 tracking-wide text-black">Bringing Farm-Fresh Goodness <p className="font-bold leading-loose">Straight to You</p></h1>
-                    <p className="font-primary text-lg tracking-wide text-center mr-2 ml-2 mb-12">At CropCollect, we connect local farmers with communities that value fresh, sustainable produce. Our mission is to simplify farm-to-table sourcing so everyone can enjoy high-quality, responsibly grown crops. Join us—and discover a new way to shop, eat, and live healthier.</p>
+                <div className='flex flex-col items-center bg-myColor justify-center h-screen lg:h-screen w-full lg:w-1/2 gap-5'>
+                    <h1 className="text-4xl lg:text-5xl font-primary text-center font-semibold mr-2 ml-2 tracking-wide lg:mt-24 mb-8 text-black">Bringing Farm-Fresh Goodness <p className="font-bold leading-loose">Straight to You</p></h1>
+                    <p className="font-primary text-xl tracking-wide text-center mr-4 ml-4 mb-12">At CropCollect, we connect local farmers with communities that value fresh, sustainable produce. Our mission is to simplify farm-to-table sourcing so everyone can enjoy high-quality, responsibly grown crops. Join us—and discover a new way to shop, eat, and live healthier.</p>
                     <motion.div variants={buttonVariants}>
-                        <Button className="w-52 h-16"> Get Started</Button>
+                        <Button className="w-52 h-16" onClick={() => navigate("/register")}> Get Started</Button>
                     </motion.div>
-                    <button
-                        className="text-blue-500 font-secondary bottom-10 absolute hover:text-secondary"
-                        onClick={() => navigate("/register")}
-                    >
-                        Create account
-                    </button>
                 </div>
                 <div className="hidden lg:block h-screen w-1/2">
                     <video 

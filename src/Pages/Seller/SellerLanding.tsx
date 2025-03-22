@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import SellerAside from "../../components/SellerAside";
 import { Pie, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -10,18 +9,28 @@ import {
   CategoryScale,
   LinearScale,
 } from "chart.js";
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+
+interface orderDetails {
+  name: string;
+  category: string;
+  quantity: number;
+  price: number;
+}
 
 interface Order {
   order_id: string;
   product: string;
+  orderDetails: orderDetails[];
   quantity: number;
   total: number;
   status: "New" | "Delivered" | "Accepted" | "Declined";
 }
 
 const SellerLandingPage = () => {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState<Order[]>([]);
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [sellerId, setSellerId] = useState<string | null>(null);
@@ -53,6 +62,7 @@ const SellerLandingPage = () => {
   
         const data: Order[] = JSON.parse(text);
         setOrders(data);
+        console.log(data);
       } catch (error) {
         console.error("❌ Fel vid hämtning av ordrar:", error);
       }
@@ -148,47 +158,17 @@ const SellerLandingPage = () => {
 
   return (
     <>
-      <SellerAside />
       <div className="flex bg-gray-100 flex-col items-center p-8">
         <h1 className="text-3xl font-bold mb-6">Welcome {name || "Seller"}</h1>
 
         <div className="w-full flex gap-5 px-4 pb-4">
-          <a href="#" className="min-w-[250px] max-w-[300px] flex-1 relative">
+          <a href="#" className="min-w-[250px] max-w-[300px] flex-1 relative" onClick={() => navigate('/orders')}>
             <div className="w-full h-full bg-blue-400 shadow-lg rounded-lg p-6 text-white">
               <h2 className="text-3xl font-bold mb-4">{orders.length}</h2>
               <p className="font-semibold text-s w-full text-center">Orders</p>
             </div>
           </a>
         </div>
-
-        <ul>
-          {orders.map((order, index) => (
-            <li key={index} className="border-b p-2">
-              <p>📦 <strong>{order.product}</strong></p>
-              <p>🔢 Quantity: {order.quantity}</p>
-              <p>💰 Total: {order.total} SEK</p>
-              <p className="text-xs text-gray-500">Status: {order.status}</p>
-
-              {order.status === "New" && (
-                <div className="flex gap-2 mt-2">
-                  <button
-                    onClick={() => updateOrderStatus(order.order_id, "Accepted")}
-                    className="bg-green-500 text-white px-3 py-1 rounded"
-                  >
-                    Accept
-                  </button>
-                  <button
-                    onClick={() => updateOrderStatus(order.order_id, "Declined")}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                  >
-                    Decline
-                  </button>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-
 
         <div className="w-full bg-white/50 backdrop-blur-lg shadow-lg rounded-lg p-6 mt-8">
           <h2 className="text-2xl font-bold mb-4 text-gray-800">Sales Statistics</h2>

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import {useNavigate} from 'react-router-dom';
 import Vegetales from '../assets/images/vegetables_picture.jpg'
 import Handcraft from '../assets/images/handcraft.jpg'
 import HoneyMaking from '../assets/images/honey_making.jpg'
@@ -8,6 +9,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 function Hero() {
+    const navigate = useNavigate();
+
     useEffect(() => {
         gsap.fromTo(".hero-image", {
             opacity: 0,
@@ -38,7 +41,7 @@ function Hero() {
         </p>
 
         <div className="flex mt-5 justify-center w-full">
-            <Explore className="w-1/3 h-[55px] font-light">Explore</Explore>
+            <Explore className="w-1/3 h-[55px] font-light" onClick={() => navigate("/register")}>Explore</Explore>
         </div>
 
         {/* HERO-IMAGES */}
@@ -61,7 +64,6 @@ function Hero() {
               relative
               col-span-1
               row-span-1
-              h-80
               hero-image
               lg:col-span-1
               lg:row-span-1

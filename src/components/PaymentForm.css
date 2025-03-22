@@ -1,0 +1,51 @@
+/* PaymentForm.css */
+
+/* Style for the CardElement component */
+.StripeElement {
+  background-color: #f8f8f8;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.payment-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-number {
+  margin-bottom: 20px;
+}
+
+
+.card-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.expiry-date, .cvc {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.expiry-date:last-child, .cvc:last-child {
+  margin-right: 0;
+}
+
+/* Style for the submit button */
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

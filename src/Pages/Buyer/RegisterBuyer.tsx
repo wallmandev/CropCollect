@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import PaymentForm from "../../components/PaymentForm";
 
 const GOOGLE_API_KEY = import.meta.env.VITE_API_GOOGLE_MAPS_KEY;
 
@@ -149,22 +150,32 @@ const Register: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
-    // Klientvalidering
+    setErrorMessage(""); // Rensa tidigare fel
+  
+    // Validera lösenord
     if (formData.password.length < 8) {
       setErrorMessage("Lösenordet måste vara minst 8 tecken långt.");
       return;
     }
-    for (const day of daysOfWeek) {
-      const { isOpen, isClosed } = formData.openHours[day];
-      if (isOpen && isClosed) {
-        setErrorMessage(`För ${day} kan du inte ha både 'Open' och 'Closed' markerat.`);
-        return;
+
+    // Validera öppettider för säljare
+    if (formData.role === "seller") {
+      for (const day of daysOfWeek) {
+        const { isOpen, isClosed } = formData.openHours[day];
+        if (isOpen && isClosed) {
+          setErrorMessage(`För ${day} kan du inte ha både 'Open' och 'Closed' markerat.`);
+          return;
+        }
       }
     }
-  
+
+    if (formData.role === "seller") {
+      <PaymentForm planId="planId" />
+    }
+
     try {
       let updatedFormData = { ...formData };
-  
+
       // Om säljare och koordinater saknas, hämta dem via Google Geocode API
       if (formData.role === "seller" && (!formData.latitude || !formData.longitude)) {
         const coords = await getCoordinatesFromAddress(formData.businessAddress);
@@ -174,30 +185,32 @@ const Register: React.FC = () => {
           throw new Error("Kunde inte hämta koordinater för adressen");
         }
       }
-  
-      // Registrera användaren via CreateUser API
+
+      // 📝 **1. Registrera användaren via Lambda**
       const registerResponse = await fetch(`${import.meta.env.VITE_API_REGISTER_URL}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedFormData),
       });
+
       if (!registerResponse.ok) throw new Error("Failed to register user");
       const registerData = await registerResponse.json();
       const newUserId = registerData.userId;
+
       if (!newUserId) throw new Error("Backend returnerade inget userId");
-  
-      // Om användaren är säljare, skicka även geo-data till usergeo API
-      if (
-        updatedFormData.role === "seller" &&
-        updatedFormData.latitude !== undefined &&
-        updatedFormData.longitude !== undefined
-      ) {
+
+      // 📌 **2. Spara användar-ID i LocalStorage**
+      localStorage.setItem("userId", newUserId);
+
+      // 📍 **3. Om säljare, skicka geo-data till usergeo**
+      if (updatedFormData.role === "seller") {
         const geoData = {
-          userId: newUserId, // Det userId som genererats av backend
+          userId: newUserId,
           businessAddress: updatedFormData.businessAddress,
           latitude: updatedFormData.latitude,
           longitude: updatedFormData.longitude,
         };
+
         console.log("📡 Sending geo-data to SAVE_LOCATION_URL:", geoData);
   
         const locationResponse = await fetch(`${import.meta.env.VITE_API_SAVE_LOCATION_URL}`, {
@@ -205,14 +218,30 @@ const Register: React.FC = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(geoData),
         });
+
         if (!locationResponse.ok) throw new Error("Failed to save location");
       }
-  
+
+      // ✅ **4. Registrering klar – visa bekräftelse**
       alert("Account created successfully!");
+
+      // 🚀 **5. Om säljare – Redirect till Stripe**
+      if (updatedFormData.role === "seller") {
+        handleStripeConnect(newUserId);
+      }
     } catch (error: any) {
       setErrorMessage(error.message);
     }
+};
+
+
+  const handleStripeConnect = async (userId: string) => {
+    localStorage.setItem("userId", userId); // Spara userId i LocalStorage
+
+    // 🏦 Redirect till Stripe Connect
+    window.location.href = `https://connect.stripe.com/oauth/authorize?redirect_uri=${window.location.origin}/oauth-callback&client_id=ca_RtklwgMcbDxvMJgJPUp05UVTJTOjNfu2&state=onbrd_RtkuBMVlcyC3on8V4UpQA2uxxe&response_type=code&scope=read_write&stripe_user[country]=SE`;
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
@@ -255,6 +284,7 @@ const Register: React.FC = () => {
               </select>
               {formData.role === "seller" && (
                 <>
+                  <PaymentForm planId="planId" />
                   <input
                     type="text"
                     name="businessAddress"

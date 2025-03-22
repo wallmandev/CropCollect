@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, useMapEvents, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import storeLocatorIcon from '../../assets/images/store-locator-icon.svg';
+import Back from "../../components/Back";
 
 // Ta bort Leaflets standard-url-hämtare
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -37,6 +39,7 @@ interface MapViewProps {
 }
 
 const MapView: React.FC<MapViewProps> = ({ geoData, onSearch }) => {
+  const navigate = useNavigate();
   const [bounds, setBounds] = useState<L.LatLngBounds | null>(null);
   const mapRef = useRef<any>(null);
 
@@ -61,11 +64,12 @@ const MapView: React.FC<MapViewProps> = ({ geoData, onSearch }) => {
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <>
+    <div style={{ position: 'relative', height: '85vh' }}>
       <MapContainer
         center={[57.7005, 16.3443]}
         zoom={13}
-        style={{ height: "600px", width: "100%", position: "relative" }}
+        style={{ height: "100%", width: "100%", position: "relative" }}
         whenReady={() => {
           const mapInstance = mapRef.current;
           if (mapInstance) {
@@ -88,10 +92,11 @@ const MapView: React.FC<MapViewProps> = ({ geoData, onSearch }) => {
           </Marker>
         ))}
       </MapContainer>
-      <button onClick={handleSearch} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded" style={{ position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000 }}>
+      <button onClick={handleSearch} className="px-4 w-1/2 py-2 bg-blue-500 text-white rounded" style={{ position: 'absolute', bottom: '30px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000 }}>
         Sök här
       </button>
     </div>
+    </>
   );
 };
 

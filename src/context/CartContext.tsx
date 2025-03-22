@@ -10,15 +10,17 @@ interface Product {
 
 interface CartItem extends Product {
   quantity: number;
+  description?: string;
 }
 
 interface CartContextType {
-  cart: CartItem[];
+  cartItems: CartItem[];
   addToCart: (product: Product, quantity: number) => void;
   updateQuantity: (id: string, delta: number) => void;
   removeFromCart: (id: string) => void;
   checkoutCart: () => Promise<void>;
   totalItems: number;
+  totalAmount: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -67,26 +69,35 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token"); // Hämta JWT-token
-  
+
       if (!userId || !token) {
         throw new Error("UserId or token is missing");
       }
-  
+
+      const payload = {
+        buyer_id: userId,
+        cart: cart.map((item) => ({
+          product_id: item.id,
+          quantity: item.quantity,
+        })),
+      };
+
       const response = await fetch(`${import.meta.env.VITE_API_POST_CART_URL}`, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}`, // Lägg till token i Authorization-rubrik
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ userId, cart }),
+        body: JSON.stringify(payload),
       });
-  
+
       if (!response.ok) {
-        throw new Error("Checkout failed");
+        throw new Error("Failed to checkout cart");
       }
-  
-      console.log("Checkout successful!");
-      setCart([]); // Töm varukorgen efter en lyckad checkout
+
+      const data = await response.json();
+      console.log("Checkout successful:", data);
+      setCart([]); // Töm varukorgen efter lyckad checkout
     } catch (error) {
       console.error("Error during checkout:", error);
     }
@@ -94,16 +105,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Totalt antal produkter i varukorgen
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+  const totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
   return (
     <CartContext.Provider
       value={{
-        cart,
+        cartItems: cart,
         addToCart,
         updateQuantity,
         removeFromCart,
         checkoutCart,
         totalItems,
+        totalAmount,
       }}
     >
       {children}
@@ -119,4 +132,6 @@ export const useCart = () => {
   }
   return context;
 };
+
+export { CartContext };
 

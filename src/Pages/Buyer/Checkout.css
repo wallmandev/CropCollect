@@ -1,0 +1,46 @@
+/* Checkout.css */
+
+.checkout-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.checkout-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.checkout-items {
+  margin-bottom: 20px;
+}
+
+.checkout-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.item-name {
+  font-size: 1.2rem;
+}
+
+.item-price {
+  font-size: 1.2rem;
+  color: #888;
+}
+
+.checkout-total {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 20px;
+}
+
+/* Add more styles as needed */

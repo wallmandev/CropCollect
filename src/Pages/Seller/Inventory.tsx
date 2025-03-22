@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Products } from "../../Interface/Products";
-import SellerAside from "../../components/SellerAside";
 
 const Inventory = () => {
     const [products, setProducts] = useState<Products[]>([]);
@@ -21,15 +20,19 @@ const Inventory = () => {
         try {
             setLoadingProducts(true);
             console.log("🌍 Fetching products from API...");
-
+    
             const seller_id = localStorage.getItem("userId");
-            const response = await fetch(`${import.meta.env.VITE_API_GET_PRODUCTS_URL}`, {
-                method: "GET",
-                headers: { seller_id: seller_id || "" },
-            });
-
+            // Bygg URL med query-parametern seller_id
+            const response = await fetch(
+                `${import.meta.env.VITE_API_GET_PRODUCTS_URL}?seller_id=${seller_id}`,
+                {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
+    
             if (!response.ok) throw new Error("❌ Failed to fetch products");
-
+    
             const data = await response.json();
             if (Array.isArray(data.data)) {
                 setProducts(data.data);
@@ -43,6 +46,7 @@ const Inventory = () => {
             setLoadingProducts(false);
         }
     };
+    
 
     const updateProduct = async (product: Products | null) => {
         if (!product) return;
@@ -91,7 +95,6 @@ const Inventory = () => {
         setEditingProduct(product);
         setShowEditModal(true);
     };
-
 
     const handleDeleteClick = (product: Products) => {
         if (!dontShowAgain) {
@@ -148,7 +151,6 @@ const Inventory = () => {
 
     return (
         <>
-        <SellerAside />
             <div className="w-full flex item-center justify-center">
                 {loadingProducts ? (
                     <p>Loading...</p>

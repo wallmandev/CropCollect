@@ -30,10 +30,12 @@ const LoginBuyer = () => {
       const data = await response.json();
       localStorage.setItem("token", data.token); // Spara JWT i localStorage
       localStorage.setItem("userId", data.userId); // Spara userId i localStorage
+      localStorage.setItem("role", data.role); // Spara roll i localStorage
+      localStorage.setItem("loginstatus", "true");
       console.log("Login successful!", data);
   
       // Navigera till en skyddad sida
-      navigate("/ListProductsBuyer");
+      navigate("/marketplace");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -48,6 +50,7 @@ const LoginBuyer = () => {
   return (
     <div className="flex bg-[#f1f1f1]">
       <div className="relative flex flex-col items-center justify-center h-screen w-screen gap-10">
+        <h1 className="font-secondary text-3xl font-semibold">Login as a buyer</h1>
         <form className="flex flex-col justify-center items-center" onSubmit={handleLogin}>
           <div className="flex flex-col items-center justify-center mb-2 gap-8">
             <div className="flex gap-3 pr-6">
