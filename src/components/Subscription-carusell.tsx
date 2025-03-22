@@ -43,7 +43,7 @@ interface CheckoutSessionResponse {
 }
 
 const handleCheckout = (priceId: string): void => {
-  fetch('https://vg5mm4d3yihvovmnh7wiqqkc2e0rbnsm.lambda-url.eu-north-1.on.aws/', {
+  fetch(`${import.meta.env.VITE_API_SUBSCRIPTION_URL}`, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',

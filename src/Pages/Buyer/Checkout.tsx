@@ -57,7 +57,7 @@ const Checkout: React.FC = () => {
         const payload = orderDetails[0]; // Send only the first item in the orderDetails array
         console.log("Request payload:", payload);
 
-        const postResponse = await fetch(`https://1davqfh3i7.execute-api.eu-north-1.amazonaws.com/CropCollect-RestAPI/seller/products`, {
+        const postResponse = await fetch(`${import.meta.env.VITE_API_POST_PRODUCTS_URL}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
